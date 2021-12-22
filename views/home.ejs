@@ -1,0 +1,37 @@
+<html lang="en">
+<head>
+ <meta charset="UTF-8">
+ <meta http-equiv="X-UA-Compatible" content="IE=edge">
+ <meta name="viewport" content="width=device-width, initial-scale=1.0">
+ <link rel="stylesheet" href="/styles.css">
+ <title>ورود</title>
+</head>
+<body>
+ <form>
+  <label for="text">نام کاربری</label>
+  <input class="username input"  type="text">
+  <label for="password">کلمه عبور</label>
+  <input class="password input"  type="password">
+  <h5 class="error"></h5>
+  <button>ورود</button>
+ </form>
+ <script>
+  document.querySelector('button').addEventListener('click',async (e) => {
+    e.preventDefault();
+    const username = document.querySelector('.username').value;
+    const password = document.querySelector('.password').value;
+    const error = document.querySelector('.error');
+  const data = await fetch('/loginAdmin', {
+    method: 'POST',
+    headers: {
+    'Content-Type': 'application/json;charset=utf-8'
+    },
+    body: JSON.stringify({username,password})
+     });
+     if(data.redirected)window.location.href = data.url
+     const errorRes = await data.json()
+     if(errorRes)error.innerHTML = errorRes.error
+  })
+ </script>
+</body>
+</html>
