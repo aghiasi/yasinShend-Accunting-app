@@ -15,17 +15,21 @@ const loginAdmin = async (req,res,next) => {
    res.redirect('/');
 
   }else{
-    res.status(403).json({error:'password not correct'});
+    res.status(403).json({error:'نام کاربری یا کلمه عبور اشتباه است'});
   }
  }else{
-    res.status(403).json({error:'not found'});
+    res.status(403).json({error:'نام کاربری یا کلمه عبور اشتباه است'});
  }
 }
 const dashbordHandler = (req,res) => {
   res.render('dashbord');
 }
+const logout = (req,res) => {
+  res.cookie('jwt','',{maxAge:1}).redirect('/');
+}
 module.exports ={
  loginHandler,
  loginAdmin,
  dashbordHandler,
+ logout,
 };

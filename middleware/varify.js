@@ -21,7 +21,19 @@ const isAuth = async (req,res,next) => {
   next();
  }
 }
+const checkUser = async (req,res,next) => {
+ const token = req.cookies.jwt;
+ if(token){
+  const data = await varifier(token); 
+  res.locals.user = data ; 
+  next();
+ }else{
+  res.locals.user = null ;
+  next();
+ };
+}
 module.exports ={
 authrozior,
 isAuth,
+checkUser,
 };

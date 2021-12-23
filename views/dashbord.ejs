@@ -1,3 +1,68 @@
 <%- include('partials/header'); %>
-<h1>dashbord</h1>
+<div class="input-group container">
+ <label class='col-12'for="text">نام کاربری</label>
+ <input class=' col-12'type="text">
+ <label class='col-12'for="number">مبلغ پیش پرداختی</label>
+ <input name="payment" class='input col-12'type="number">
+ <label class='col-12'for="number">سبد 3 کیلویی</label>
+ <input name="s3" class='input col-12'type="number">
+ <label class='col-12'for="number">قی</number>
+ <input name="fee-s3" class='input col-12'type="number">
+ <label class='col-12'for="number">سبد 4 کیلویی</label>
+ <input name="s4" class='input col-12'type="number">
+ <label class='col-12'for="number">فی</label>
+ <input name="fee-s4" class='col-12'type="number">
+ <label class='col-12'for="number">سبد 5 کیلویی</label>
+ <input name="s5" class='col-12'type="number">
+ <label class='col-12'for="number">فی</label>
+ <input name="fee-s5" class='col-12'type="number">
+ <label class='col-12'for="number">سبد 6 کیلویی</label>
+ <input name="s6" class='col-12'type="number">
+ <label class='col-12'for="number">فی</label>
+ <input name="fee-s6" class='col-12'type="number">
+ <label class='col-12'for="number">سبد 7 کیلویی</label>
+ <input name="s7" class='col-12'type="number">
+ <label class='col-12'for="number">فی</label>
+ <input name="fee-s7" class='col-12'type="number">
+ <button id='btn' class="btn mt-2 btn-primary">ثبت</button>
+ </div>
+<script>
+ const colection = document.getElementsByTagName('input');
+ document.querySelector('#btn').addEventListener('click',async(e) => {
+  e.preventDefault();
+  let info ={
+   username:colection[1].value,
+   payment:parseInt(colection[2].value),
+   three:{
+    numberof:parseInt(colection[3].value),
+    fee:parseInt(colection[4].value
+   )},
+   four:{
+    numberof:parseInt(colection[5].value),
+    fee:parseInt(colection[6].value
+   )},
+   five:{
+    numberof:parseInt(colection[7].value),
+    fee:parseInt(colection[8].value
+   )},
+   six:{
+    numberof:parseInt(colection[9].value),
+    fee:parseInt(colection[10].value
+   )},
+   seven:{
+    numberof:parseInt(colection[11].value),
+    fee:parseInt(colection[12].value
+   )},
+  }
+  const result = await fetch('/createuser',
+  {
+   method:"post",
+   headers:{
+    'content-type':'application/json;charset=utf-8'
+   },
+   body:JSON.stringify(info)
+  })
+  if(result.redirected)window.location.href=result.url;
+ })
+</script>
 <%- include('partials/footer'); %>
