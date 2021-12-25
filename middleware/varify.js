@@ -33,6 +33,7 @@ const checkUser = async (req,res,next) => {
  };
 }
 module.exports ={
+varifier,
 authrozior,
 isAuth,
 checkUser,

@@ -1,3 +1,5 @@
+
+const { varifier } = require('../middleware/varify');
 const User = require('../model/User');
 
 const getUser = async (req,res) => {
@@ -9,14 +11,13 @@ const getUser = async (req,res) => {
 const createUserHandler=async(req,res)=>{
  const data = req.body;
  const {three,four,five,six,seven} = data
- console.log(data)
+ const creator = await varifier(req.cookies.jwt);
  const user = await User({
   username:data.username,
-  payment:[{howmuch:data.payment}],
+  payment:[{howmuch:data.payment},],
    three,four,five,six,seven
  });
- user.save();
- res.send(user);
+ user.save().then(result=>res.render('checkout',{data:result}))
 };
 const postUser = (req,res) => {
   return;
