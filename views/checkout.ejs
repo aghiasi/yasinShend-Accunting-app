@@ -72,36 +72,14 @@
                                 </tr>
                             </thead>
                             <tbody>
+                                <% for(product in data.products){ %>
                                 <tr>
-                                    <td class="col-6">سبد سه کیلویی</td>
-                                    <td class="col-2"><%= data.three.numberof  %>  </td>
-                                    <td class="pay col-2"><%= data.three.fee %></td>
-                                    <td class=" pay col-2"><%= data.three.pay  %>  </td>
+                                    <td class="col-6"><%= data.products[product].name %></td>
+                                    <td class="col-2"><%= data.products[product].numberof  %>  </td>
+                                    <td class="pay col-2"><%= data.products[product].fee %></td>
+                                    <td class=" pay col-2"><%= data.products[product].pay  %>  </td>
                                 </tr>
-                                <tr>
-                                    <td class="col-6">سبد چهار کیلویی</td>
-                                    <td class="col-2"><%= data.four.numberof  %>  </td>
-                                    <td class="pay col-2"><%= data.four.fee %></td>
-                                    <td class=" pay col-2"><%= data.four.pay  %>  </td>
-                                </tr>
-                                <tr>
-                                    <td class="col-6">سبد پنج کیلویی</td>
-                                    <td class="col-2"><%= data.five.numberof  %>  </td>
-                                    <td class=" pay col-2"><%= data.five.fee %></td>
-                                    <td class=" pay col-2"><%= data.five.pay  %>  </td>
-                                </tr>
-                                <tr>
-                                    <td class="col-6"> سبد شیش کیلویی</td>
-                                    <td class="col-2"><%= data.six.numberof  %>  </td>
-                                    <td class="pay col-2"><%= data.six.fee %></td>
-                                    <td class=" pay col-2"><%= data.six.pay  %>  </td>
-                                </tr>
-                                <tr>
-                                    <td class="col-6">سبد هفت کیلویی</td>
-                                    <td class="col-2"><%= data.seven.numberof %></td>
-                                    <td class="pay col-2"><%= data.seven.fee %></td>
-                                    <td class=" pay col-2"><%= data.seven.pay %>  </td>
-                                </tr>
+                                <% } %>
                                 <tr>
                                     <td class="text-right">
                                         <p> مبلغ پرداختی:</p>

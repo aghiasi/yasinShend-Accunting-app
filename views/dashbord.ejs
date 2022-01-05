@@ -1,84 +1,161 @@
-
 <%- include('partials/header'); %>
-<div class= "dashbord input-group container">
- <label class='col-12'for="text">نام کاربری</label>
- <input class=' col-12'type="text">
- <label class='col-12'for="number">مبلغ پیش پرداختی</label>
- <input value="0" name="payment" class='input col-12'type="number">
- <label class='col-12'for="number">سبد 3 کیلویی</label>
- <input value="0" name="s3" class='input col-12'type="number">
- <label class='col-12'for="number">قی</number>
- <input value="0" name="fee-s3" class='input col-12'type="number">
- <label class='col-12'for="number">سبد 4 کیلویی</label>
- <input value="0" name="s4" class='input col-12'type="number">
- <label class='col-12'for="number">فی</label>
- <input value="0"  name="fee-s4" class='col-12'type="number">
- <label class='col-12'for="number">سبد 5 کیلویی</label>
- <input value="0" name="s5" class='col-12'type="number">
- <label class='col-12'for="number">فی</label>
- <input value="0" name="fee-s5" class='col-12'type="number">
- <label class='col-12'for="number">سبد 6 کیلویی</label>
- <input value="0" name="s6" class='col-12'type="number">
- <label class='col-12'for="number">فی</label>
- <input value="0" name="fee-s6" class='col-12'type="number">
- <label class='col-12'for="number">سبد 7 کیلویی</label>
- <input value="0" name="s7" class='col-12'type="number">
- <label class='col-12'for="number">فی</label>
- <input value="0" name="fee-s7" class='col-12'type="number">
- <div class="container dispaly-flex justify-content-center">
- <button id='btn' class="btn mt-2 btn-primary col-5 ">ثبت</button>
- </div>
+<style>
+  .input {
+    border: none;
+    outline: none;
+    border: 1px solid rgb(167, 167, 167);
+    transition: all 200ms ease-in-out;
+  }
+  .input:focus {
+    border: none;
+    border: 1px solid rgb(167, 167, 167);
+    transition: all 200ms ease-in-out;
+    box-shadow: 0px 0px 0px 2px rgba(97, 160, 255, 0.75);
+  }
+  .btn:active {
+    transform: scale(0.9);
+    transition: all 200ms ease-in-out;
+  }
+</style>
+<div class="wraper">
+  <div
+    class="
+      dashbord
+      input-group
+      container
+      clo-12
+      col-md-5
+      d-flex
+      justify-content-center
+      align-items-center
+      flex-column
+      mt-5
+    "
+  >
+    <div class="col-12 error text-center"></div>
+    <label class="col-12 col-md-5" for="text">نام کاربری</label>
+    <input class="input col-12 col-md-5" type="text" />
+    <label class="col-12 col-md-5" for="number">مبلغ پیش پرداختی</label>
+    <input
+      value="0"
+      name="payment"
+      class="input col-12 col-md-5"
+      type="number"
+    />
+    <label class="col-12 col-md-5" for="number">سبد 3 کیلویی</label>
+    <input value="0" name="s3" class="input col-12 col-md-5" type="number" />
+    <label class="col-12 col-md-5" for="number">فی</label>
+    <input
+      value="0"
+      name="fee-s3"
+      class="input col-12 col-md-5"
+      type="number"
+    />
+    <label class="col-12 col-md-5" for="number">سبد 4 کیلویی</label>
+    <input value="0" name="s4" class="input col-12 col-md-5" type="number" />
+    <label class="col-12 col-md-5" for="number">فی</label>
+    <input
+      value="0"
+      name="fee-s4"
+      class="input col-12 col-md-5"
+      type="number"
+    />
+    <label class="col-12 col-md-5" for="number">سبد 5 کیلویی</label>
+    <input value="0" name="s5" class="input col-12 col-md-5" type="number" />
+    <label class="col-12 col-md-5" for="number">فی</label>
+    <input
+      value="0"
+      name="fee-s5"
+      class="input col-12 col-md-5"
+      type="number"
+    />
+    <label class="col-12 col-md-5" for="number">سبد 6 کیلویی</label>
+    <input value="0" name="s6" class="input col-12 col-md-5" type="number" />
+    <label class="col-12 col-md-5" for="number">فی</label>
+    <input
+      value="0"
+      name="fee-s6"
+      class="input col-12 col-md-5"
+      type="number"
+    />
+    <label class="col-12 col-md-5" for="number">سبد 7 کیلویی</label>
+    <input value="0" name="s7" class="input col-12 col-md-5" type="number" />
+    <label class="col-12 col-md-5" for="number">فی</label>
+    <input
+      value="0"
+      name="fee-s7"
+      class="input col-12 col-md-5"
+      type="number"
+    />
+    <div
+      class="container col-12 d-flex justify-content-center align-items-center"
+    >
+      <button
+        id="btn"
+        class="btn btn-primary mui-btn mui-btn--primary mt-2 col-3 mt-5"
+      >
+        ثبت
+      </button>
+    </div>
+  </div>
 </div>
- <div class="result"></div>
+<div class="result"></div>
 <script>
- const colection = document.getElementsByTagName('input');
- document.querySelector('#btn').addEventListener('click',async(e) => {
-  e.preventDefault();
-  let info ={
-   username:colection[1].value,
-   payment:parseInt(colection[2].value),
-   three:{
-    numberof:parseInt(colection[3].value),
-    fee:parseInt(colection[4].value
-   )},
-   four:{
-    numberof:parseInt(colection[5].value),
-    fee:parseInt(colection[6].value
-   )},
-   five:{
-    numberof:parseInt(colection[7].value),
-    fee:parseInt(colection[8].value
-   )},
-   six:{
-    numberof:parseInt(colection[9].value),
-    fee:parseInt(colection[10].value
-   )},
-   seven:{
-    numberof:parseInt(colection[11].value),
-    fee:parseInt(colection[12].value
-   )},
-  }
-  const result = await fetch('/createuser',
-  {
-   method:"post",
-   headers:{
-    'content-type':'application/json;charset=utf-8'
-   },
-   body:JSON.stringify(info)
-  })
-  if(result.status==200){
-   document.querySelector('.navbar').style.display = 'none';
-   document.querySelector('.dashbord').style.display = 'none';
-  }
-  document.querySelector('.result').innerHTML = await result.text();
-  document.querySelectorAll('.pay').forEach((e) => {
-    console.log(e)
-    e.innerHTML = Intl.NumberFormat('en-US').format(e.innerHTML);
-  })
-  if(confirm('فاکتور پرینت شود')){
-   window.print();
-   if(confirm('بازگشت به صفحه  قبلی'))window.location.reload(true)
-  }
- })
+  const colection = document.getElementsByTagName("input");
+  document.querySelector("#btn").addEventListener("click", async (e) => {
+    e.preventDefault();
+    let info = {
+      username: colection[1].value,
+      payment: parseInt(colection[2].value),
+      three: {
+        name: "سبد سه کیلویی",
+        numberof: parseInt(colection[3].value),
+        fee: parseInt(colection[4].value),
+      },
+      four: {
+        name: "سبد چهار کیلویی",
+        numberof: parseInt(colection[5].value),
+        fee: parseInt(colection[6].value),
+      },
+      five: {
+        name: "سبد پنج کیلویی",
+        numberof: parseInt(colection[7].value),
+        fee: parseInt(colection[8].value),
+      },
+      six: {
+        name: "سبد شیش کیلویی",
+        numberof: parseInt(colection[9].value),
+        fee: parseInt(colection[10].value),
+      },
+      seven: {
+        name: "سبد هفت کیلویی",
+        numberof: parseInt(colection[11].value),
+        fee: parseInt(colection[12].value),
+      },
+    };
+    const result = await fetch("/createuser", {
+      method: "post",
+      headers: {
+        "content-type": "application/json;charset=utf-8",
+      },
+      body: JSON.stringify(info),
+    });
+    if (result.status == 200) {
+      document.querySelector(".navbar").style.display = "none";
+      document.querySelector(".wraper").style.display = "none";
+      document.querySelector(".result").innerHTML = await result.text();
+      document.querySelectorAll(".pay").forEach((e) => {
+        e.innerHTML = Intl.NumberFormat("en-US").format(e.innerHTML);
+      });
+      if (confirm("فاکتور پرینت شود")) {
+        window.print();
+        if (confirm("بازگشت به صفحه  قبلی")) window.location.reload(true);
+      }
+    } else {
+      const errorRef = document.querySelector(".error");
+      const error = await result.json();
+      errorRef.innerHTML = error.error;
+    }
+  });
 </script>
 <%- include('partials/footer'); %>

@@ -1,0 +1,170 @@
+<%- include('partials/header'); %>
+<style>
+  p {
+    margin: 0;
+    padding: 0;
+  }
+</style>
+<h3 id="username" class="col-7 m-5 baner"><%= data.username %></h3>
+<p class="error"></p>
+<div class="d-flex flex-wrap justify-content-center container">
+  <% products.forEach((item)=>{ %>
+  <div class="card m-2" style="min-width: 18rem">
+    <div id="name" class="card-header"><%= item.name %></div>
+    <div class="card-body">
+      <h6>تعداد</h6>
+      <h6 class="card-title"><%= item.numberof %></h6>
+      <p>فی</p>
+      <p class="card-text"><%= item.fee %></p>
+      <p>مبلغ</p>
+      <p class="pay card-text"><%=item.pay%></p>
+      <p>تعداد باقی مانده</p>
+      <p><%= item.left %></p>
+      <div class="mui-textfield mui-textfield--float-label">
+        <input name="<%= item.name %>" class="input" type="number" />
+        <label for="">تعداد</label>
+      </div>
+    </div>
+  </div>
+  <% }) %> <% payment.forEach((item)=>{ %>
+  <div class="card m-2" style="min-width: 18rem">
+    <% if(!item.paymentmethod.cash){ %>
+    <div class="card-header">چک</div>
+    <div class="card-body">
+      <p class="card-title">به تاریخ</p>
+      <p class="card-title"><%= item.paymentmethod.czech.date %></p>
+      <% }else{ %>
+      <div class="card-header">مبلغ دریافتی</div>
+      <div class="card-body">
+        <p class="crad-title">تاریخ</p>
+        <p><%= item.date %></p>
+        <% } %>
+        <h6>مبلغ</h6>
+        <h6 class="pay card-title"><%= item.howmuch %></h6>
+        <p class="card-text">توسط</p>
+        <p class="card-text"><%= item.paymentmethod.creator %></p>
+      </div>
+    </div>
+    <% }) %>
+    <div class="card m-2" style="min-width: 18rem">
+      <div class="card-header">صورت حساب</div>
+      <div class="card-body">
+        <h6 class="card-title">بدهی</h6>
+        <p class="card-title"><%= debt %></p>
+        <p class="card-text">مبلغ کل قرار داد</p>
+        <p class="pay card-text"><%= total %></p>
+        <p class="card-text">کل پرداختی</p>
+        <p class="pay"><%= data.totalpay %></p>
+        <div class="mui-textfield mui-textfield--float-label">
+          <input name="payment" class="input" type="number" />
+          <label for="">مبلغ دریافتی جدید</label>
+        </div>
+        <div class="mui-textfield mui-textfield--float-label">
+          <input id="date" type="text" />
+          <label for="">تاریخ</label>
+        </div>
+        <div class="mui-radio">
+          <label>
+            <input type="radio" name="<%= user %>" id="czech" value="false" />
+            چک
+          </label>
+        </div>
+        <div class="mui-radio">
+          <label>
+            <input type="radio" name="<%= user %>" id="cash" value="false" />
+            نقدی
+          </label>
+        </div>
+      </div>
+    </div>
+    <div class="result"></div>
+    <div class="col-12 d-flex justify-content-center flex-wrap">
+      <button
+        id="register"
+        class="mui-btn mui-btn--primary col-4 d-block m-1 baner"
+      >
+        ثبت
+      </button>
+      <button id="btn" class="mui-btn mui-btn--primary col-4 d-block m-1 baner">
+        بازگشت
+      </button>
+      <button
+        id="carts"
+        class="mui-btn mui-btn--primary col-4 d-block m-1 baner"
+      >
+        ریز فاکتور
+      </button>
+    </div>
+  </div>
+  <script>
+    const czech = document.querySelector("#czech");
+    const username = document.querySelector("#username").innerText;
+    const date = document.querySelector("#date");
+    document.querySelectorAll(".pay").forEach((e) => {
+      e.innerHTML = Intl.NumberFormat("en-US").format(e.innerHTML);
+    });
+    document.querySelector("#btn").addEventListener("click", (e) => {
+      e.preventDefault();
+      window.location.href = "/dashbord";
+    });
+    document.querySelector("#register").addEventListener("click", async (e) => {
+      e.preventDefault();
+      const inputs = document.querySelectorAll(".input");
+      const itemsName = document.querySelectorAll("#name");
+      const error = document.querySelector(".error");
+      let cart = [];
+      let payment;
+      for (product of inputs) {
+        if (product.value != "") {
+          if (product.name != "payment") {
+            cart = [
+              ...cart,
+              {
+                name: product.name,
+                amount: parseInt(product.value),
+                by: czech.name,
+              },
+            ];
+          } else {
+            if (czech.checked) {
+              payment = {
+                howmuch: parseInt(product.value),
+                paymentmethod: {
+                  cash: false,
+                  czech: { date: date.value },
+                  creator: czech.name,
+                },
+              };
+            } else {
+              payment = {
+                howmuch: product.value,
+                paymentmethod: { creator: czech.name },
+              };
+            }
+          }
+        }
+      }
+      fetch("/getuser", {
+        method: "POST",
+        headers: {
+          "content-type": "application/json;charset=utf-8",
+        },
+        body: JSON.stringify({ payment, cart, username }),
+      }).then((result) => {
+        if (result.status == 200) {
+          setTimeout(() => window.location.reload(true), 400);
+        }
+        if (result.status == 400) error.innerHTML = "خطایی رخ داده ";
+      });
+    });
+    document.querySelector("#carts").addEventListener("click", (e) => {
+      e.preventDefault();
+      fetch(`/usercart/${username}`).then(async (result) => {
+        if (result.status === 200)
+          document.querySelector(".result").innerHTML = await result.text();
+        if (result.status === 404) error.innerHTML = "یافت نشد";
+      });
+    });
+  </script>
+  <%- include('partials/footer'); %>
+</div>
