@@ -3,6 +3,13 @@ const ADMINS = require("../hooks/ADMINS");
 const token = require("../middleware/jwt");
 const bcrypt = require("bcrypt");
 const Admin = require("../model/Admin");
+const products = [
+  "سه کیلویی",
+  "چهار کیلویی",
+  "پنج کیلویی",
+  "شیش کیلویی",
+  "هفت کیلویی",
+];
 const loginHandler = (req, res, next) => {
   res.render("home.ejs");
 };
@@ -15,7 +22,7 @@ const loginAdmin = async (req, res, next) => {
     );
     if (passwordCheck) {
       const jwt = await token(found.username);
-      res.cookie("jwt", jwt, { maxAge: 1000 * 60 * 15 });
+      res.cookie("jwt", jwt, { maxAge: 1000 * 60 * 30 });
       res.redirect("/");
     } else {
       res.status(403).json({ error: "نام کاربری یا کلمه عبور اشتباه است" });
@@ -25,7 +32,7 @@ const loginAdmin = async (req, res, next) => {
   }
 };
 const dashbordHandler = (req, res) => {
-  res.render("dashbord");
+  res.render("dashbord", { products });
 };
 const logout = (req, res) => {
   res.cookie("jwt", "", { maxAge: 1 }).redirect("/");

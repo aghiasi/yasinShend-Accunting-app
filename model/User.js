@@ -48,6 +48,9 @@ const paymentSchema = new Schema({
       type: String,
     },
   },
+  to: {
+    type: String,
+  },
   date: {
     type: String,
     default: dateShamsi(),

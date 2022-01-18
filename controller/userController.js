@@ -20,14 +20,15 @@ const getUser = async (req, res) => {
 };
 const createUserHandler = async (req, res) => {
   const data = req.body;
-  const { three, four, five, six, seven } = data;
   const creator = await varifier(req.cookies.jwt);
   if (creator) {
     const user = await User({
       username: data.username,
       phone: data.phone,
-      payment: [{ howmuch: data.payment, paymentmethod: { creator } }],
-      products: [three, four, five, six, seven],
+      payment: [
+        { howmuch: data.payment, paymentmethod: { creator }, to: data.to },
+      ],
+      products: data.products,
     });
     user
       .save()

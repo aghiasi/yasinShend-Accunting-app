@@ -20,80 +20,62 @@
     width: 40%;
     border-top: 1px solid rgb(68, 67, 67);
   }
+  .card {
+    border-radius: 20px;
+  }
 </style>
 <div class="wraper">
   <div
     class="dashbord input-group container clo-10 col-md-5 d-flex justify-content-center align-items-center flex-column mt-5"
   >
+    <div class="container d-flex justify-content-center">
+      <h6>ایجاد قرارداد جدید</h6>
+    </div>
+    <div class="mui-textfield mui-textfield--float-label col-6">
+      <input type="text" id="username" />
+      <label>نام کاربری</label>
+    </div>
+    <div class="mui-textfield mui-textfield--float-label col-6">
+      <input type="number" id="phone" />
+      <label>شماره تماس</label>
+    </div>
+    <% products.forEach(item=>{ %>
+    <div class="card col-6 mt-5">
+      <div class="card-header"><%= item %></div>
+      <div class="card-body">
+        <div class="mui-textfield mui-textfield--float-label col-12">
+          <input type="number" class="products" name="<%= item %>" />
+          <label for="">تعداد</label>
+        </div>
+        <div class="mui-textfield mui-textfield--float-label col-12">
+          <input type="number" class="fee" name="<%= item %>" />
+          <label for="">فی</label>
+        </div>
+      </div>
+    </div>
+    <% }) %>
+    <p class="total"></p>
+    <div class="mui-textfield mui-textfield--float-label col-6">
+      <input type="number" id="payment" />
+      <label>مبلغ پرداختی</label>
+    </div>
+    <div class="mui-textfield mui-textfield--float-label col-6">
+      <input id="to" type="text" />
+      <label>به حساب</label>
+    </div>
     <div class="col-12 error text-center"></div>
-    <label class="col-12 col-md-5" for="text">نام کاربری</label>
-    <input class="input col-12 col-md-5" type="text" />
-    <label class="col-12 col-md-5">شماره تلفن</label>
-    <input name="s3" class="input col-12 col-md-5" type="number" />
-    <div class="dropdown-divider"></div>
-    <label class="col-12 col-md-5" for="number">سبد 3 کیلویی</label>
-    <input value="0" name="s3" class="input col-12 col-md-5" type="number" />
-    <label class="col-12 col-md-5" for="number">فی</label>
-    <input
-      value="0"
-      name="fee-s3"
-      class="input col-12 col-md-5"
-      type="number"
-    />
-    <div class="dropdown-divider"></div>
-    <label class="col-12 col-md-5" for="number">سبد 4 کیلویی</label>
-    <input value="0" name="s4" class="input col-12 col-md-5" type="number" />
-    <label class="col-12 col-md-5" for="number">فی</label>
-    <input
-      value="0"
-      name="fee-s4"
-      class="input col-12 col-md-5"
-      type="number"
-    />
-    <div class="dropdown-divider"></div>
-    <label class="col-12 col-md-5" for="number">سبد 5 کیلویی</label>
-    <input value="0" name="s5" class="input col-12 col-md-5" type="number" />
-    <label class="col-12 col-md-5" for="number">فی</label>
-    <input
-      value="0"
-      name="fee-s5"
-      class="input col-12 col-md-5"
-      type="number"
-    />
-    <div class="dropdown-divider"></div>
-    <label class="col-12 col-md-5" for="number">سبد 6 کیلویی</label>
-    <input value="0" name="s6" class="input col-12 col-md-5" type="number" />
-    <label class="col-12 col-md-5" for="number">فی</label>
-    <input
-      value="0"
-      name="fee-s6"
-      class="input col-12 col-md-5"
-      type="number"
-    />
-    <div class="dropdown-divider"></div>
-    <label class="col-12 col-md-5" for="number">سبد 7 کیلویی</label>
-    <input value="0" name="s7" class="input col-12 col-md-5" type="number" />
-    <label class="col-12 col-md-5" for="number">فی</label>
-    <input
-      value="0"
-      name="fee-s7"
-      class="input col-12 col-md-5"
-      type="number"
-    />
-    <div class="dropdown-divider"></div>
-    <label class="col-12 col-md-5" for="number">مبلغ پیش پرداختی</label>
-    <input
-      value="0"
-      name="payment"
-      class="input col-12 col-md-5"
-      type="number"
-    />
     <div
       class="container col-12 d-flex justify-content-center align-items-center"
     >
       <button
-        id="btn"
+        id="pay"
         class="btn btn-primary mui-btn mui-btn--primary mt-2 col-3 mt-5"
+      >
+        محاسبه مبلغ کل
+      </button>
+      <button
+        id="btn"
+        class="btn btn-primary mui-btn mui-btn--primary mt-2 col-3 mt-5 disabled"
       >
         ثبت
       </button>
@@ -102,39 +84,50 @@
 </div>
 <div class="result"></div>
 <script>
-  const colection = document.getElementsByTagName("input");
+  const total = document.querySelector(".total");
+  const username = document.querySelector("#username");
+  const phone = document.querySelector("#phone");
+  const payment = document.querySelector("#payment");
+  const to = document.querySelector("#to");
+  const products = document.querySelectorAll(".products");
+  const fee = document.querySelectorAll(".fee");
+  const errorset = document.querySelector(".error");
+  let output = 0;
+  let info;
+  document.querySelector("#pay").addEventListener("click", (e) => {
+    e.preventDefault();
+    fee.forEach((item, index) => {
+      if (!item.value == "" && !fee[index].value == "") {
+        output += parseInt(item.value) * parseInt(products[index].value);
+      }
+    });
+    total.innerHTML = Intl.NumberFormat("en-US").format(output);
+    document.querySelector("#btn").classList.remove("disabled");
+  });
   document.querySelector("#btn").addEventListener("click", async (e) => {
     e.preventDefault();
-    let info = {
-      username: colection[1].value,
-      phone: parseInt(colection[2].value),
-      payment: parseInt(colection[13].value),
-      three: {
-        name: "سبد سه کیلویی",
-        numberof: parseInt(colection[3].value),
-        fee: parseInt(colection[4].value),
-      },
-      four: {
-        name: "سبد چهار کیلویی",
-        numberof: parseInt(colection[5].value),
-        fee: parseInt(colection[6].value),
-      },
-      five: {
-        name: "سبد پنج کیلویی",
-        numberof: parseInt(colection[7].value),
-        fee: parseInt(colection[8].value),
-      },
-      six: {
-        name: "سبد شیش کیلویی",
-        numberof: parseInt(colection[9].value),
-        fee: parseInt(colection[10].value),
-      },
-      seven: {
-        name: "سبد هفت کیلویی",
-        numberof: parseInt(colection[11].value),
-        fee: parseInt(colection[12].value),
-      },
-    };
+    if (username.value != "" && phone.value != "") {
+      if (payment.value == "") payment.value = 0;
+      info = {
+        username: username.value,
+        phone: phone.value,
+        payment: parseInt(payment.value),
+        to: to.value,
+        products: [],
+      };
+      products.forEach((item, index) => {
+        if (!item.value == "" && !fee[index].value == "") {
+          info.products.push({
+            name: item.name,
+            numberof: parseInt(item.value),
+            fee: parseInt(fee[index].value),
+          });
+        }
+      });
+    } else {
+      return (errorset.innerHTML = "لطفا فرم را پر کنید");
+    }
+    console.log(info);
     if (confirm("قرار داد عقد شود ؟")) {
       const result = await fetch("/createuser", {
         method: "post",
