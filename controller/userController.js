@@ -25,6 +25,7 @@ const createUserHandler = async (req, res) => {
   if (creator) {
     const user = await User({
       username: data.username,
+      phone: data.phone,
       payment: [{ howmuch: data.payment, paymentmethod: { creator } }],
       products: [three, four, five, six, seven],
     });
@@ -56,9 +57,16 @@ const cartHandler = (req, res) => {
     })
     .catch((err) => res.status(404).json({ error: "کاربر یافت نشد" }));
 };
+const deleteUserHandler = (req, res) => {
+  const user = req.body;
+  User.findOneAndDelete(user)
+    .then((result) => res.status(200).json({ mas: "done" }))
+    .catch((err) => res.status(400).json({ error: "some thing went wrong" }));
+};
 module.exports = {
   postUser,
   createUserHandler,
   getUser,
   cartHandler,
+  deleteUserHandler,
 };

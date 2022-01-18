@@ -59,6 +59,10 @@ const userSchema = new Schema({
     maxlength: 50,
     unique: true,
   },
+  phone: {
+    type: Number,
+    maxlength: 15,
+  },
   cart: {
     type: [cartSchema],
     default: [],

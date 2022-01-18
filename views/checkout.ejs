@@ -1,13 +1,18 @@
 <style>
 .body-main {
      background: #ffffff;
-     margin-top: 30px;
      margin-bottom: 30px;
-     padding: 40px 30px !important;
      position: relative;
-     font-size: 10px
+     font-size: 10px;
+     margin:0%;
+     padding: 0%;
  }
+*{
+    direction: rtl;
+    padding: 0%;
+    margin: 0%;
 
+}
  .main thead {
      background: #ffffff;
      color: #fff
@@ -33,6 +38,9 @@
  p{
      font-size: small;
  }
+ .left{
+     direction: ltr;
+ }
  </style>
  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
@@ -42,17 +50,20 @@
             <div class="col-md-12 col-md-offset-1 body-main">
                 <div class="col-md-12">
                     <div class="row">
-                        <div class="col-md-5 text-right">
-                            <h6 style="color: #F81D2D;">یاسین شند</h6>
-                            <p>09124128553</p>
+                        <div class="col-12">
+                            <div class=" text-center">
+                            <h6 class="" style="color: #F81D2D;">یاسین شند</h6>
+                            <br/>
+                            <h6 class="">قرارداد فروش</h6>
+                            </div>
+                            <p class="left">09124128553</p>
+                            <p class="left"><strong><%= data.date %></p></strong>
                         </div>
                     </div> <br />
                     <div >
-                        <div class="col-md-12 ">
-                            <h6>قرار داد فروش</h6>
-                        </div>
                         <div class="col-md-12">
                             <h6 class="text-left"><%= data.username %></h6>
+                            <h6 class=""><%= data.phone %></h6>
                         </div>
                     </div> <br />
                     <div>
@@ -82,12 +93,12 @@
                                 <% } %>
                                 <tr>
                                     <td class="text-right">
-                                        <p> مبلغ پرداختی:</p>
                                         <p>مبلغ کل :</p>
+                                        <p> مبلغ پرداختی:</p>
                                     </td>
                                     <td>
-                                        <p class="pay"><%= data.totalpay %></p>
                                         <p class="pay"><%= data.total  %></p>
+                                        <p class="pay"><%= data.totalpay %></p>
                                     </td>                                              
                                 </tr>
                                 <tr style="color: #F81D2D;">
@@ -103,7 +114,6 @@
                     </div>
                     <div>
                         <div class="col-md-12 dispaly-flex ">
-                            <p><strong class=""><%= data.date %></p></strong> <br />
                             <p>امظاء</p>
                         </div>
                     </div>

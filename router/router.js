@@ -11,6 +11,7 @@ const {
   createUserHandler,
   postUser,
   cartHandler,
+  deleteUserHandler,
 } = require("../controller/userController");
 //auth routes
 router.get("/", isAuth, loginHandler);
@@ -22,4 +23,5 @@ router.post("/createuser", authrozior, createUserHandler);
 router.get("/getuser/:username", authrozior, getUser);
 router.post("/getuser", authrozior, postUser);
 router.get("/usercart/:username", cartHandler);
+router.delete("/deleteuser", deleteUserHandler);
 module.exports = router;

@@ -11,7 +11,10 @@ const app = express();
 mongoose
   .connect((uri = process.env.DATABASE_URL))
   .then((result) =>
-    app.listen(process.env.PORT || 8080, console.log("server is up "))
+    app.listen(
+      process.env.PORT || 8080,
+      console.log("server is up " + process.env.PORT)
+    )
   )
   .catch((err) => console.log(err));
 //app config & middle wares
