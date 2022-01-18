@@ -91,25 +91,25 @@
     <div class="col-md-12 d-flex justify-content-center flex-wrap">
       <button
         id="register"
-        class="mui-btn mui-btn--primary col-12 col-md-3 d-block m-1 baner"
+        class="mui-btn mui-btn--primary col-12 col-md-2 d-block m-1 baner"
       >
         ثبت
       </button>
       <button
         id="btn"
-        class="mui-btn mui-btn--primary col-12 col-md-3 d-block m-1 baner"
+        class="mui-btn mui-btn--primary col-12 col-md-2 d-block m-1 baner"
       >
         بازگشت
       </button>
       <button
         id="carts"
-        class="mui-btn mui-btn--primary col-12 col-md-3 d-block m-1 baner"
+        class="mui-btn mui-btn--primary col-12 col-md-2 d-block m-1 baner"
       >
         ریز فاکتور
       </button>
       <button
         id="delete"
-        class="mui-btn col-12 col-md-3 mui-btn--primary d-block m-1 baner"
+        class="mui-btn col-12 col-md-2 mui-btn--primary d-block m-1 baner"
       >
         حذف کاربر
       </button>
@@ -189,13 +189,11 @@
       e.preventDefault();
       if (confirm("کاربر حذف شود؟")) {
         fetch("/deleteuser", {
-          method: "delete",
+          method: "DELETE",
           headers: {
-            "content-type": "application/json;utf-8",
+          "content-type": "application/json;charset=utf-8",
           },
-          body: {
-            username,
-          },
+          body:JSON.stringify({username})
         }).then((result) => {
           if (result.status === 200) window.location.href = "/";
           if (result.status === 400) error.innerText = "خطایی رخ داده";

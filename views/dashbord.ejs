@@ -40,7 +40,7 @@
       <label>شماره تماس</label>
     </div>
     <% products.forEach(item=>{ %>
-    <div class="card col-6 mt-5">
+    <div class="card col-6 mt-1">
       <div class="card-header"><%= item %></div>
       <div class="card-body">
         <div class="mui-textfield mui-textfield--float-label col-12">
@@ -54,6 +54,7 @@
       </div>
     </div>
     <% }) %>
+    <p>مبلغ کل :</p>
     <p class="total"></p>
     <div class="mui-textfield mui-textfield--float-label col-6">
       <input type="number" id="payment" />
@@ -65,7 +66,7 @@
     </div>
     <div class="col-12 error text-center"></div>
     <div
-      class="container col-12 d-flex justify-content-center align-items-center"
+      class="container col-12 d-flex justify-content-center align-items-center mb-5"
     >
       <button
         id="pay"
