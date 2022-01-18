@@ -52,6 +52,8 @@
         <% } %>
         <h6>مبلغ</h6>
         <h6 class="pay card-title"><%= item.howmuch %></h6>
+        <p>به حساب :</p>
+        <p><%= item.to %></p>
         <p class="card-text">توسط</p>
         <p class="card-text"><%= item.paymentmethod.creator %></p>
       </div>
@@ -159,6 +161,7 @@
               payment = {
                 howmuch: product.value,
                 paymentmethod: { creator: czech.name },
+                to:date.value
               };
             }
           }
