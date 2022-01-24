@@ -44,6 +44,8 @@
     <div class="card-body">
       <p class="card-title">به تاریخ</p>
       <p class="card-title"><%= item.paymentmethod.czech.date %></p>
+      <p>شماره چک</p>
+      <p><%= item.paymentmethod.czech.czechnumber %></p>
       <% }else{ %>
       <div class="card-header">مبلغ دریافتی</div>
       <div class="card-body">
@@ -52,8 +54,10 @@
         <% } %>
         <h6>مبلغ</h6>
         <h6 class="pay card-title"><%= item.howmuch %></h6>
+        <% if(item.paymentmethod.cash){ %>
         <p>به حساب :</p>
         <p><%= item.to %></p>
+         <% } %>
         <p class="card-text">توسط</p>
         <p class="card-text"><%= item.paymentmethod.creator %></p>
       </div>
@@ -74,7 +78,11 @@
         </div>
         <div class="mui-textfield mui-textfield--float-label">
           <input id="date" type="text" />
-          <label for="">تاریخ</label>
+          <label for="">تاریخ/ توضیحات</label>
+        </div>
+        <div class="mui-textfield mui-textfield--float-label">
+          <input id="info" type="text" />
+          <label for="">توضیحات چک</label>
         </div>
         <div class="mui-radio">
           <label>
@@ -120,6 +128,7 @@
   <div class="result col-12"></div>
   <script>
     const czech = document.querySelector("#czech");
+    const info = document.querySelector('#info');
     const username = document.querySelector("#username").innerText;
     const date = document.querySelector("#date");
     document.querySelectorAll(".pay").forEach((e) => {
@@ -153,7 +162,7 @@
                 howmuch: parseInt(product.value),
                 paymentmethod: {
                   cash: false,
-                  czech: { date: date.value },
+                  czech: { date: date.value,czechnumber:info.value },
                   creator: czech.name,
                 },
               };

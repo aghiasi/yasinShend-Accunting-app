@@ -20,7 +20,7 @@ router.get("/dashbord", authrozior, dashbordHandler);
 router.get("/logout", logout);
 // user routes
 router.post("/createuser", authrozior, createUserHandler);
-router.get("/getuser/:username", authrozior, getUser);
+router.get("/getuser/:data", authrozior, getUser);
 router.post("/getuser", authrozior, postUser);
 router.get("/usercart/:username", cartHandler);
 router.delete("/deleteuser", deleteUserHandler);

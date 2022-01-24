@@ -62,28 +62,45 @@
     </div>
     <div class="mui-textfield mui-textfield--float-label col-6">
       <input id="to" type="text" />
-      <label>به حساب</label>
+      <label>به حساب / تاریخ</label>
+    </div>
+    <div class="mui-textfield mui-textfield--float-label col-6">
+      <input id="infor" type="text" />
+      <label>توضیحات / شماره چک </label>
+    </div>
+    <div class="mui-radio text-left col-6">
+      <label>
+        <input
+          class=""
+          type="radio"
+          name="<%= user %>"
+          id="czech"
+          value="false"
+        />
+        چک
+      </label>
     </div>
     <div class="col-12 error text-center"></div>
     <div
-      class="container col-12 d-flex justify-content-center align-items-center mb-5"
+      class="container row col-6 d-flex justify-content-center align-items-center mb-5"
     >
       <button
         id="pay"
-        class="btn btn-primary mui-btn mui-btn--primary mt-2 col-3 mt-5"
+        class="btn btn-primary mui-btn mui-btn--primary mt-2 col-12 col-md-6 mt-5"
       >
         محاسبه مبلغ کل
       </button>
       <button
         id="btn"
-        class="btn btn-primary mui-btn mui-btn--primary mt-2 col-3 mt-5 disabled"
+        class="btn btn-primary mui-btn mui-btn--primary mt-2 col-12 col-md-6 mt-5 disabled"
       >
         ثبت
       </button>
     </div>
   </div>
 </div>
-<div class="result"></div>
+<div id="result" class="result"></div>
+<script src="static/pdf-js.js"></script>
 <script>
   const total = document.querySelector(".total");
   const username = document.querySelector("#username");
@@ -93,6 +110,8 @@
   const products = document.querySelectorAll(".products");
   const fee = document.querySelectorAll(".fee");
   const errorset = document.querySelector(".error");
+  const czech = document.querySelector("#czech");
+  const infor = document.querySelector("#infor");
   let output = 0;
   let info;
   document.querySelector("#pay").addEventListener("click", (e) => {
@@ -108,16 +127,39 @@
   document.querySelector("#btn").addEventListener("click", async (e) => {
     e.preventDefault();
     if (username.value != "" && phone.value != "") {
-      if (payment.value == "") payment.value = 0;
-      info = {
-        username: username.value,
-        phone: phone.value,
-        payment: parseInt(payment.value),
-        to: to.value,
-        products: [],
-      };
+      if (payment.value == "")
+        return (errorset.innerHTML =
+          "باید پیش پرداخت برای عقد قرار داد ثبت گردد");
+      if (czech.checked) {
+        info = {
+          username: username.value,
+          phone: phone.value,
+          payment: parseInt(payment.value),
+          paymentmethod: {
+            cash: false,
+            czech: {
+              date: to.value,
+              czechnumber: infor.value,
+            },
+          },
+          products: [],
+        };
+      } else {
+        info = {
+          username: username.value,
+          phone: phone.value,
+          payment: parseInt(payment.value),
+          to: to.value,
+          products: [],
+        };
+      }
       products.forEach((item, index) => {
-        if (!item.value == "" && !fee[index].value == "") {
+        if (
+          item.value != "" &&
+          fee[index].value != "" &&
+          !isNaN(fee[index].value) &&
+          !isNaN(item.value)
+        ) {
           info.products.push({
             name: item.name,
             numberof: parseInt(item.value),
@@ -128,31 +170,34 @@
     } else {
       return (errorset.innerHTML = "لطفا فرم را پر کنید");
     }
-    console.log(info);
     if (confirm("قرار داد عقد شود ؟")) {
-      const result = await fetch("/createuser", {
+      fetch("/createuser", {
         method: "post",
         headers: {
           "content-type": "application/json;charset=utf-8",
         },
         body: JSON.stringify(info),
-      });
-      if (result.status == 200) {
-        document.querySelector(".navbar").style.display = "none";
-        document.querySelector(".wraper").style.display = "none";
-        document.querySelector(".result").innerHTML = await result.text();
-        document.querySelectorAll(".pay").forEach((e) => {
-          e.innerHTML = Intl.NumberFormat("en-US").format(e.innerHTML);
-        });
-        if (confirm("فاکتور پرینت شود")) {
-          window.print();
-          if (confirm("بازگشت به صفحه  قبلی")) window.location.reload(true);
+      }).then(async (result) => {
+        if (result.status === 200) {
+          result
+            .text()
+            .then((result) => {
+              document.querySelector(".result").innerHTML = result;
+            })
+            .then((result) => {
+              document.querySelector(".navbar").style.display = "none";
+              document.querySelector(".wraper").style.display = "none";
+              setTimeout(() => {
+                window.print();
+                if (confirm("بازگشت به صفحه قبل "))
+                  window.location.reload(true);
+              }, 1000);
+            });
+        } else {
+          const res = await result.json();
+          errorset.innerHTML = res.error;
         }
-      } else {
-        const errorRef = document.querySelector(".error");
-        const error = await result.json();
-        errorRef.innerHTML = error.error;
-      }
+      });
     }
   });
 </script>

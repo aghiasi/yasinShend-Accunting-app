@@ -2,8 +2,14 @@ const { repeat } = require("lodash");
 const { varifier } = require("../middleware/varify");
 const User = require("../model/User");
 const getUser = async (req, res) => {
-  const { username } = req.params;
-  const user = await User.findOne({ username });
+  const { data } = req.params;
+  let param = {};
+  if (isNaN(parseInt(data))) {
+    param = { username: data };
+  } else {
+    param = { phone: data };
+  }
+  const user = await User.findOne(param);
   if (user) {
     res.render("admin", {
       data: user,
@@ -26,7 +32,11 @@ const createUserHandler = async (req, res) => {
       username: data.username,
       phone: data.phone,
       payment: [
-        { howmuch: data.payment, paymentmethod: { creator }, to: data.to },
+        {
+          howmuch: data.payment,
+          paymentmethod: { creator, ...data.paymentmethod },
+          to: data.to,
+        },
       ],
       products: data.products,
     });
@@ -36,7 +46,6 @@ const createUserHandler = async (req, res) => {
         res.render("checkout", { data: result });
       })
       .catch((err) => {
-        console.log(err);
         err.code === 11000
           ? res.status(400).json({ error: "این کاربر دارای قرار داد می باشد" })
           : res.status(400).json({ error: "خطا رخ داده دوباره تلاش کنید" });

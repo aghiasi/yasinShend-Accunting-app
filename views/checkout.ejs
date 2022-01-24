@@ -114,6 +114,17 @@
                     </div>
                     <div>
                         <div class="col-md-12 dispaly-flex ">
+                            <p>توضیحات</p>
+                            <% data.payment.forEach(item=>{ %>
+                                <p><%= item.to %></p>
+                                <% if(item.paymentmethod.cash == false){ %>
+                                    <p>شماره چک دریافتی </p>
+                                    <p><%= item.paymentmethod.czech.czechnumber %></p>
+                                    <p>به تاریخ</p>
+                                    <p><%= item.paymentmethod.czech.date %></p>
+                             <%   } %>
+                            <% }) %>
+                            <p>این قرار داد تا 15 روز در صورت تغییر نکردن قیمت مواده اولیه در صورت تصفیه نبود دارای ارزش میباشد </p>
                             <p>امظاء</p>
                         </div>
                     </div>

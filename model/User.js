@@ -42,7 +42,9 @@ const paymentSchema = new Schema({
     czech: {
       date: {
         type: String,
+        default: dateShamsi(),
       },
+      czechnumber: String,
     },
     creator: {
       type: String,
