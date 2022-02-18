@@ -1,9 +1,12 @@
 const res = require("express/lib/response");
 const jwt = require("jsonwebtoken");
+//varifis the token and returns the true value
 const varifier = async (token, next) => {
   const varify = await jwt.verify(token, process.env.SECRET);
   return varify;
 };
+//all 3 of this functions varifies the admins to don't get acceses to nonadmin users
+// in 3 routes
 const authrozior = async (req, res, next) => {
   if (req.cookies.jwt) {
     const authroztion = await varifier(req.cookies.jwt);

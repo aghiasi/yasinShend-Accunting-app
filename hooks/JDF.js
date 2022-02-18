@@ -1,3 +1,5 @@
+// all this 3rd party packge dose is get the time from miladi and retruns in formated shamsi
+// the format strcture is yyyy/mm/dd  hh:mm
 function gregorian_to_jalali(gy, gm, gd) {
   var g_d_m, jy, jm, jd, gy2, days;
   g_d_m = [0, 31, 59, 90, 120, 151, 181, 212, 243, 273, 304, 334];

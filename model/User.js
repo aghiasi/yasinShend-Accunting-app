@@ -2,6 +2,7 @@ const res = require("express/lib/response");
 const { Schema, model } = require("mongoose");
 const { dateShamsi } = require("../hooks/JDF");
 const _ = require("lodash");
+// user cart schema for nested schema
 const cartSchema = new Schema({
   name: {
     required: true,
@@ -22,6 +23,8 @@ const productSchema = new Schema({
   numberof: Number,
   fee: Number,
   pay: Number,
+  // the amount of the product left in urser invoic
+  // this function count
   left: {
     type: String,
     default: function () {
@@ -29,6 +32,7 @@ const productSchema = new Schema({
     },
   },
 });
+//the payment schema for nested schema
 const paymentSchema = new Schema({
   howmuch: {
     type: Number,
@@ -58,6 +62,8 @@ const paymentSchema = new Schema({
     default: dateShamsi(),
   },
 });
+//user schema is the main schema of this page and the
+// nested schemas are for this schema
 const userSchema = new Schema({
   username: {
     type: String,
@@ -88,6 +94,8 @@ const userSchema = new Schema({
     type: String || Number,
   },
 });
+// this function count the totals and other methods for the user schema with the params that we have
+// this count total debat left of the products etc...
 userSchema.pre("save", async function (next) {
   //count the total price of each pruduct
   let totalFor = 0;
@@ -125,6 +133,8 @@ userSchema.pre("save", async function (next) {
   if (totalFor > 0) this.debt = formatedDebt;
   next();
 });
+// this function adds the products in the user card
+// and add the new payments in the user history
 userSchema.statics.addProduct = async function (info) {
   const user = await this.findOne({ username: info.username });
   if (info.payment) user.payment.push(info.payment);
